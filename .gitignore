@@ -1,0 +1,39 @@
+--- Python Virtual Environments ---
+
+Ignore the virtual environment folder
+
+venv/
+.venv/
+env/
+.env/
+
+--- Environment Variables File ---
+
+CRITICAL: Ignore the .env file containing all secrets!
+
+.env
+
+--- Python Cache ---
+
+Ignore compiled Python files
+
+pycache/
+*.pyc
+
+--- Mac/OS Specific ---
+
+Ignore Mac metadata files
+
+.DS_Store
+
+--- VS Code ---
+
+Ignore VS Code editor settings
+
+.vscode/
+
+--- Log Files ---
+
+Ignore any log files
+
+*.log

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bot Test Page</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+
+    <div class="w-full max-w-2xl bg-white rounded-lg shadow-xl p-8">
+        <h1 class="text-3xl font-bold text-gray-800 mb-6 text-center">
+            NIE Bot - Test Console
+        </h1>
+        <p class="text-gray-600 mb-6 text-center">
+            This page tests your Python server's "brain" (<code>query_handler.py</code>) directly.
+            <br>
+            Your Python server must be running on <code>http://localhost:5000</code>.
+        </p>
+
+        <!-- Input Form -->
+        <form id="chat-form" class="mb-6 flex space-x-3">
+            <input
+                id="message-input"
+                type="text"
+                placeholder="Ask 'hod of cse' or 'tell me about clubs'..."
+                class="flex-1 p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            <button
+                type="submit"
+                id="submit-button"
+                class="p-3 px-6 bg-blue-600 text-white rounded-lg font-semibold shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+                Send
+            </button>
+        </form>
+
+        <!-- Response Area -->
+        <div class="bg-gray-50 rounded-lg p-6 min-h-[200px] border">
+            <h2 class="text-sm font-semibold text-gray-500 uppercase mb-3">Bot Response:</h2>
+            <!-- Use <pre> to respect newlines from the timetable -->
+            <pre id="response-area" class="whitespace-pre-wrap text-gray-800 font-sans">Waiting for query...</pre>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('chat-form');
+        const input = document.getElementById('message-input');
+        const responseArea = document.getElementById('response-area');
+        const submitButton = document.getElementById('submit-button');
+        
+        // This is the URL of your Python server
+        const API_URL = 'http://localhost:5000/api/chat';
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const message = input.value.trim();
+            if (!message) return;
+
+            responseArea.innerText = 'Loading...';
+            submitButton.disabled = true;
+            submitButton.innerText = 'Thinking...';
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ message: message }),
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                
+                // Display the bot's text response
+                responseArea.innerText = data.response;
+
+            } catch (error) {
+                console.error('Error fetching from bot:', error);
+                responseArea.innerText = `Error connecting to server at ${API_URL}.\n\nIs your Python server running?\n\n${error.message}`;
+            } finally {
+                submitButton.disabled = false;
+                submitButton.innerText = 'Send';
+            }
+        });
+    </script>
+
+</body>
+</html>
