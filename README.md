@@ -1,7 +1,3 @@
-Here is your project description formatted as a professional `README.md` file, ready to copy into your GitHub repository.
-
-Writing
-
 # NIE Campus Connect Bot 🎓
 
 A smart **WhatsApp and Web chatbot for NIE Mysore**, powered by Python, Flask, MySQL, and the Google Gemini API. The chatbot is designed to provide instant, accurate answers to student queries about timetables, faculty information, campus events, and other college-related topics.
